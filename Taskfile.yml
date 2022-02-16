@@ -1,0 +1,22 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  build:
+    desc: build
+    cmds:
+      - go build -o dist/switchaws main.go
+    silent: false
+
+  install:
+    desc: install
+    deps: [build]
+    cmds:
+      - rm /usr/local/bin/switchaws
+      - cp -pr dist/switchaws /usr/local/bin/switchaws
+      - cp switchawswrapper.sh /usr/local/bin
+    silent: false

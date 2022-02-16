@@ -1,0 +1,1 @@
+alias switch='source /usr/local/bin/switchawswrapper.sh'
