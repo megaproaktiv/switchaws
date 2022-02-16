@@ -71,7 +71,6 @@ func main() {
 				}
 				canonicalForm, err := convertCredentialsEntry(k)
 				if err != nil {
-					fmt.Printf("k / v = %v/%v ", k , v)
 					continue
 				}
 				fmt.Printf("export %s=%s\n", canonicalForm, v)
@@ -94,6 +93,7 @@ func main() {
 		}
 	}
 	fmt.Printf("export %s=%s\n", "AWSUME_PROFILE", requestedProfile)
+	fmt.Printf("export %s=%s\n", "AWS_DEFAULT_PROFILE", requestedProfile)
 }
 
 func expandTildeToUserHome(filePath string) string {
@@ -126,6 +126,12 @@ func convertConfigEntry(credFileVar string) (string, error) {
 		return "AWS_DEFAULT_REGION", nil
 	case "workdir":
 		return "PWD", nil
+	case "itermbadge":
+		return "ITERMBADGE", nil
+	case "taskwarrior":
+		return "TASKWARRIOR", nil
+	case "source_profile":
+		return "source_profile", nil
 	case "output":
 		return "AWS_DEFAULT_OUTPUT", nil
 	default:
