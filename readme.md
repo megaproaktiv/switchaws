@@ -1,4 +1,12 @@
-# Overview
+# switch (aws)
+
+Based on the work of [varunkashyap](https://github.com/varunkashyap/aws-profiles) and the great [awsume](https://github.com/trek10inc/awsume) I build this switching tool and decided not to implement AWS-SSO, but let other tools deal with that.
+The idea is to create my own simple context switching tool, wich switches the aws profile and does other things.
+You can absolutely use other tools and update `switchawswrapper.sh` to do other things
+
+For eays of installation I choose GO, because it creates a single binary and does not need a certain python installation like awsume.
+
+## Overview
 
 With the combination of
 
