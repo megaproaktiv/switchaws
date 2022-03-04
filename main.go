@@ -48,6 +48,7 @@ aws-profiles [-f filepath] [-v] [-h] profile-name
 	}
 }
 
+
 func main() {
 	requestedProfile := os.Args[1]
 	//log.Printf("Args1: %v", requestedProfile)
@@ -88,12 +89,36 @@ func main() {
 				if err != nil {
 					continue
 				}
-				fmt.Printf("export %s=%s\n", canonicalForm, v)
+				// Only Change dir if not in subdir
+				if canonicalForm == "CHDIR" {
+					currentWorkingDirectory, err := os.Getwd()
+					if err != nil {
+						log.Fatal(err)
+					}
+					if strings.HasPrefix(currentWorkingDirectory, v){
+
+					}else{
+						fmt.Printf("export %s=%s\n", canonicalForm, v)
+					}
+				}else{ 
+					fmt.Printf("export %s=%s\n", canonicalForm, v)
+				}
 			}
 		}
 	}
 	fmt.Printf("export %s=%s\n", "AWSUME_PROFILE", requestedProfile)
 	fmt.Printf("export %s=%s\n", "AWS_DEFAULT_PROFILE", requestedProfile)
+	// Treat mfa/awsumerole
+	// if source_profile is there
+	// get key/secret from the source profile
+	// get arn from the source profile
+	// ask user (in bash?)
+	// aws sts get-session-token --serial-number arn-of-the-mfa-device --token-code code-from-token
+	// export stuff
+	// "SecretAccessKey": "secret-access-key",
+	// "SessionToken": "temporary-session-token",
+	// "Expiration": "expiration-date-time",
+	// "AccessKeyId": "access-key-id"
 }
 
 func expandTildeToUserHome(filePath string) string {
@@ -115,6 +140,8 @@ func convertCredentialsEntry(credFileVar string) (string, error) {
 		return "AWS_SECRET_ACCESS_KEY", nil
 	case "aws_sts_token":
 		return "AWS_STS_TOKEN", nil
+	case "aws_session_token":
+		return "AWS_SESSION_TOKEN", nil
 	default:
 		return "", fmt.Errorf("Unknown credentials file variable: %s", credFileVar)
 	}
@@ -125,13 +152,15 @@ func convertConfigEntry(credFileVar string) (string, error) {
 	case "region":
 		return "AWS_DEFAULT_REGION", nil
 	case "workdir":
-		return "PWD", nil
+		return "CHDIR", nil
 	case "itermbadge":
 		return "ITERMBADGE", nil
 	case "taskwarrior":
 		return "TASKWARRIOR", nil
 	case "source_profile":
 		return "source_profile", nil
+	case "url":
+		return "AWS_URL", nil
 	case "output":
 		return "AWS_DEFAULT_OUTPUT", nil
 	default:
