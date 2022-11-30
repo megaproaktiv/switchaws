@@ -1,3 +1,7 @@
 awsume
 analyse.md
 dist
+
+dist/
+.vscode/settings.json
+.DS_Store

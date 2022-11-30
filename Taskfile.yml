@@ -9,7 +9,7 @@ tasks:
   build:
     desc: build
     cmds:
-      - go build -o dist/switchaws main.go
+      - go build -o dist/switchaws main/main.go
     silent: false
 
   install:

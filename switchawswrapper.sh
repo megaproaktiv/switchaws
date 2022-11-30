@@ -2,9 +2,13 @@
 ## Unset all addition vars here
 unset ITERMBADGE
 unset TASKWARRIOR
+unset AWS_URL
 
 
 export $(/usr/local/bin/switchaws $1)
+if [[ ! -z "$MESSAGE" ]] then
+    echo $MESSAGE
+fi
 if [[ ! -z "$CHDIR" ]] then
     export PWD="$CHDIR"
     cd $PWD
